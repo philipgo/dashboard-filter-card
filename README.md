@@ -1,4 +1,4 @@
-# <img src="images/logo.svg" alt="" width="36"> Dashboard Filter Card
+# ![](images/logo-small.svg) Dashboard Filter Card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
 [![Validate](https://github.com/philipgo/dashboard-filter-card/actions/workflows/validate.yml/badge.svg)](https://github.com/philipgo/dashboard-filter-card/actions/workflows/validate.yml)
@@ -20,7 +20,7 @@ Per entity you choose: **Hidden**, **Read-only** or **Full access**.
 2. Add the card and choose source and target dashboard.
 3. Set the modes and press **Save & build**. A missing target dashboard is created.
 
-<img src="images/editor.png" alt="Card editor" width="450">
+![Card editor](images/editor.png)
 
 Or in YAML:
 
