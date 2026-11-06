@@ -57,6 +57,10 @@ entries and press **Save & build**. The target is rebuilt completely – do not 
 - **Not access control.** Users can still control any entity via search, more-info dialogs, Assist or the API.
 - Target dashboards in YAML mode are not supported.
 
+## Credits
+
+Built with [Claude](https://claude.ai) (Anthropic) as AI coding assistant.
+
 ## License
 
 [GPL-3.0-or-later](LICENSE)
