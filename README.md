@@ -1,3 +1,5 @@
+<img src="images/logo.svg" alt="Logo" width="96" align="right">
+
 # Dashboard Filter Card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)

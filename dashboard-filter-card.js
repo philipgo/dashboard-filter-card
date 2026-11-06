@@ -13,9 +13,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const CARD_TYPE = 'dashboard-filter-card';
 const MARKER = 'dashboard_filter_card'; // key in the target dashboard config that holds the selection
+// Home Assistant requires a hyphen in dashboard URL paths; we also require lowercase
+const TARGET_RE = /^[a-z0-9_]+(-[a-z0-9_]+)+$/;
 
 // ---------------------------------------------------------------------------
 // Translations
@@ -612,6 +614,7 @@ class DashboardFilterCard extends HTMLElement {
     this.shadowRoot.querySelector('.list').innerHTML = '';
     if (!this._hass.user?.is_admin) return this._status(t('not_admin'), 'err');
     if (!this._dstPath) return this._status(t('missing_config'), 'err');
+    if (!TARGET_RE.test(this._dstPath)) return this._status(t('bad_target'), 'err');
     if (this._dstPath === this._srcPath) return this._status(t('same_dashboard'), 'err');
 
     this._status(t('loading'));
@@ -695,7 +698,7 @@ class DashboardFilterCard extends HTMLElement {
     if (this._busy) return;
     const dst = this._dstPath;
     if (dst === this._srcPath || dst === 'lovelace') return this._status(t('same_dashboard'), 'err');
-    if (!/^[a-z0-9_]+(-[a-z0-9_]+)+$/.test(dst)) return this._status(t('bad_target'), 'err');
+    if (!TARGET_RE.test(dst)) return this._status(t('bad_target'), 'err');
 
     this._busy = true;
     this._renderHead();
@@ -994,6 +997,8 @@ class DashboardFilterCardEditor extends HTMLElement {
           .f { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
           .f label { font-weight: 500; }
           .f small { color: var(--secondary-text-color); }
+          .f small.err { color: var(--error-color); }
+          .f input.invalid { border-color: var(--error-color); }
           .f input, .f select { font: inherit; padding: 8px; border-radius: 6px; border: 1px solid var(--divider-color);
             background: var(--card-background-color); color: var(--primary-text-color); }
         </style>
@@ -1002,11 +1007,23 @@ class DashboardFilterCardEditor extends HTMLElement {
         <div class="f"><label>${esc(t('ed_target'))}</label>
           <input data-k="target" list="dfc-dashboards" autocomplete="off">
           <datalist id="dfc-dashboards">${list.map((d) => `<option value="${esc(d.url_path)}">${esc(d.title || '')}</option>`).join('')}</datalist>
+          <small class="err" hidden></small>
           <small>${esc(t('ed_target_help'))}</small></div>
         <div class="f"><label>${esc(t('ed_target_title'))}</label><input data-k="target_title"></div>
         <div class="f"><label>${esc(t('ed_title'))}</label><input data-k="title"></div>`;
       this.querySelectorAll('[data-k]').forEach((el) =>
-        el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => this._changed(el.dataset.k, el.value)),
+        el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
+          if (el.dataset.k === 'target') {
+            // Lowercase and spaces to hyphens while typing
+            const v = el.value.toLowerCase().replace(/\s+/g, '-');
+            if (v !== el.value) {
+              const pos = el.selectionStart;
+              el.value = v;
+              el.setSelectionRange(pos, pos);
+            }
+          }
+          this._changed(el.dataset.k, el.value);
+        }),
       );
       this._built = true;
     }
@@ -1016,6 +1033,23 @@ class DashboardFilterCardEditor extends HTMLElement {
       const v = this._config[el.dataset.k] ?? (el.dataset.k === 'source' ? 'lovelace' : '');
       if (el.value !== v) el.value = v;
     });
+    this._validate();
+  }
+
+  // Shows an error below the target field while the URL path is not usable
+  _validate() {
+    const t = translator(this._hass);
+    const input = this.querySelector('[data-k="target"]');
+    const err = this.querySelector('small.err');
+    if (!input || !err) return;
+    const v = input.value.trim();
+    const src = this._config.source || 'lovelace';
+    let msg = '';
+    if (v && !TARGET_RE.test(v)) msg = t('bad_target');
+    else if (v && v === src) msg = t('same_dashboard');
+    err.textContent = msg;
+    err.hidden = !msg;
+    input.classList.toggle('invalid', !!msg);
   }
 
   _changed(key, value) {
@@ -1023,6 +1057,7 @@ class DashboardFilterCardEditor extends HTMLElement {
     if (value === '' && key !== 'source') delete config[key];
     else config[key] = value;
     this._config = config;
+    this._validate();
     this.dispatchEvent(new CustomEvent('config-changed', { detail: { config }, bubbles: true, composed: true }));
   }
 }

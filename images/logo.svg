@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Dashboard Filter Card">
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#03A9F4"/>
+  <!-- Four dashboard tiles: full access (solid), read-only (outline), hidden (dashed, faded) -->
+  <rect x="96" y="96" width="144" height="144" rx="28" fill="#FFFFFF"/>
+  <rect x="272" y="96" width="144" height="144" rx="28" fill="#FFFFFF"/>
+  <rect x="108" y="284" width="120" height="120" rx="20" fill="none" stroke="#FFFFFF" stroke-width="24"/>
+  <rect x="284" y="284" width="120" height="120" rx="20" fill="none" stroke="#FFFFFF" stroke-opacity="0.45"
+        stroke-width="16" stroke-dasharray="26 18" stroke-linecap="round"/>
+</svg>
