@@ -1,6 +1,4 @@
-<img src="images/logo.svg" alt="Logo" width="96" align="right">
-
-# Dashboard Filter Card
+# <img src="images/logo.svg" alt="" width="36"> Dashboard Filter Card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
 [![Validate](https://github.com/philipgo/dashboard-filter-card/actions/workflows/validate.yml/badge.svg)](https://github.com/philipgo/dashboard-filter-card/actions/workflows/validate.yml)
