@@ -10,7 +10,9 @@ Per entity you choose: **Hidden**, **Read-only** or **Full access**.
 
 ## Installation
 
-**HACS:** HACS → ⋮ → Custom repositories → `https://github.com/philipgo/dashboard-filter-card`, type **Dashboard** → download.
+[![Open in Home Assistant](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=philipgo&repository=dashboard-filter-card&category=plugin)
+
+**Marketplace (HACS):** Use the button above, or add `https://github.com/philipgo/dashboard-filter-card` as a custom repository of type **Dashboard** and download it.
 
 **Manual:** Copy `dashboard-filter-card.js` to `/config/www/` and add `/local/dashboard-filter-card.js` as a JavaScript module resource.
 
