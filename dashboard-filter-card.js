@@ -13,7 +13,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-const VERSION = '1.0.1';
+const VERSION = '1.0.3';
 const CARD_TYPE = 'dashboard-filter-card';
 const MARKER = 'dashboard_filter_card'; // key in the target dashboard config that holds the selection
 // Home Assistant requires a hyphen in dashboard URL paths; we also require lowercase
